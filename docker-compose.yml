@@ -1,0 +1,31 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: API
+    build:
+      context: .
+      target: development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - "3000:3000"
+    networks:
+      - apinet
+    command: npm run start:dev
+    env_file:
+      - .env
+    depends_on:
+      - postgres
+  postgres:
+    image: postgres
+    env_file:
+      - .env
+    networks:
+      - apinet
+    volumes:
+      - ${HOME}/pgdata:/var/lib/postgresql/data
+
+networks:
+  apinet:
