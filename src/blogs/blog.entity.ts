@@ -1,34 +1,46 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, DeleteDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ApiProperty } from "@nestjs/swagger";
 
-@Entity()
+/**
+ * Сущность описывающая структуру таблицы blogs
+ **/
+@Entity("blogs")
 export class Blog {
   @PrimaryGeneratedColumn()
+  @ApiProperty()
   id: number;
 
   @Column()
+  @ApiProperty()
   title: string;
 
   @Column()
+  @ApiProperty()
   description: string;
 
   @Column()
+  @ApiProperty()
   photo: string;
 
   @Column({
+    name: "created_at",
     type: "timestamp",
-    default: null
+    default: () => "CURRENT_TIMESTAMP"
   })
-  deleted: Date
-
-  @Column({
-    type: "timestamp",
-    default: Date.now()
-  })
+  @ApiProperty()
   createdAt: Date
 
   @Column({
+    name: "updated_at",
     type: "timestamp",
-    default: Date.now()
+    default: () => "CURRENT_TIMESTAMP"
   })
+  @ApiProperty()
   updatedAt: Date
+
+  @DeleteDateColumn({
+    name:"deleted_at"
+  })
+  @ApiProperty()
+  deletedAt?: Date
 }

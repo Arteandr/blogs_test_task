@@ -1,7 +1,9 @@
-import { Allow, IsNotEmpty, IsNumber, IsNumberString } from "class-validator";
+import { Allow, IsNotEmpty, IsNumberString } from "class-validator";
 import { ApiProperty } from "@nestjs/swagger";
+import { Blog } from "../blog.entity";
 
-export class CreateBlogDto {
+/** Класс описывающий поля для создания нового блога (все поля обязательны) */
+export class BlogDto {
   @Allow()
   @IsNotEmpty()
   @ApiProperty()
@@ -18,7 +20,8 @@ export class CreateBlogDto {
   photo: string;
 }
 
-export abstract class UpdateBlogDto {
+/** Класс описывающий поля для изменения существующего блога (необходимо выбрать хотя бы одно поле) */
+export class UpdateBlogDto {
   @Allow()
   @ApiProperty()
   title: string;
@@ -32,9 +35,25 @@ export abstract class UpdateBlogDto {
   photo: string;
 }
 
+/** Класс необходимый для указания типа запросов с id */
 export class IdParams {
   @Allow()
   @IsNumberString()
   @ApiProperty()
   id: number
+}
+
+/** Класс описывающий данные которые приходят по ручке получения всех блогов */
+export class GetLastDto {
+  @ApiProperty({type: [Blog]})
+  data: [Blog];
+
+  @ApiProperty()
+  total: number;
+}
+
+/** Класс описывающий то, на сколько строк в таблице повлиял запрос */
+export class AffectedDto {
+  @ApiProperty()
+  affected: number
 }
